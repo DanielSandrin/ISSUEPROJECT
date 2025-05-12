@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:14.11
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: daniel
+      POSTGRES_PASSWORD: "010407"
+      POSTGRES_DB: chamados
+    ports:
+      - "5432:5432"
+    volumes:
+      - "postgres_data:/var/lib/postgresql/data"
+
+  localstack:
+    image: localstack/localstack
+    container_name: localstack_container
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3
+      - DEBUG=1
+    volumes:
+      - "localstack:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+volumes:
+  postgres_data:
+  localstack:
